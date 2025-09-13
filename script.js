@@ -7,10 +7,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function clearQR() {
     qrcodeContainer.innerHTML = '';
+    qrResult.style.display = 'none';
+    successMsg.style.display = 'none';
   }
 
   form.addEventListener('submit', function (e) {
-    e.preventDefault(); // ✅ stop page refresh
+    e.preventDefault();
 
     const name = document.getElementById('name').value.trim();
     const mobile = document.getElementById('mobile').value.trim();
@@ -19,22 +21,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const tableNo = document.getElementById('tableNo').value.trim();
 
     if (!name || !mobile || !members || !date || !tableNo) {
-      alert('Please fill all fields.');
+      alert('⚠️ Please fill all fields.');
       return;
     }
 
-    // Mobile validation
     const digits = mobile.replace(/\D/g, '');
     if (digits.length < 7) {
-      alert('Please enter a valid mobile number (at least 7 digits).');
+      alert('⚠️ Please enter a valid mobile number (at least 7 digits).');
       return;
     }
 
-    const bookingInfo = `Booking Details:\nName: ${name}\nMobile: ${mobile}\nMembers: ${members}\nDate: ${date}\nTable No: ${tableNo}`;
+    const bookingInfo = `Booking Details:\n👤 Name: ${name}\n📞 Mobile: ${mobile}\n👥 Members: ${members}\n📅 Date: ${date}\n🍽️ Table No: ${tableNo}`;
 
     clearQR();
 
-    // Generate QR
     new QRCode(qrcodeContainer, {
       text: bookingInfo,
       width: 200,
@@ -42,24 +42,21 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     qrResult.style.display = 'block';
-
-    // ✅ Show success message
     successMsg.style.display = 'block';
-    successMsg.innerText = `✅ You successfully booked table no ${tableNo} on ${date}`;
+    successMsg.innerText = `✅ Successfully booked table #${tableNo} on ${date}`;
+
+    setTimeout(() => {
+      successMsg.style.display = 'none';
+    }, 6000);
   });
 
-  // Download QR
   downloadBtn.addEventListener('click', function () {
     const canvas = qrcodeContainer.querySelector('canvas');
     const img = qrcodeContainer.querySelector('img');
-    let dataURL = null;
+    let dataURL = canvas ? canvas.toDataURL('image/png') : img?.src;
 
-    if (canvas) {
-      dataURL = canvas.toDataURL('image/png');
-    } else if (img) {
-      dataURL = img.src;
-    } else {
-      alert('QR not found. Generate the QR first.');
+    if (!dataURL) {
+      alert('⚠️ QR not found. Please generate it first.');
       return;
     }
 

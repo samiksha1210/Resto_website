@@ -8,8 +8,53 @@
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="index.css">
+  <!-- QR Code Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    body { scroll-behavior: smooth; }
+    /* Dark Mode */
+    .dark-mode { background-color: #121212; color: #f5f5f5; }
+    .dark-mode .card, .dark-mode .bg-light { background-color: #1e1e1e; color: #fff; }
+    .dark-mode .navbar { background-color: rgba(20,20,20,0.9) !important; }
+
+    /* Hero */
+    .hero-section { height: 100vh; background: url('img/hero.jpg') center/cover no-repeat; position: relative; display:flex; align-items:center; justify-content:center; text-align:center; }
+    .hero-section .overlay { position:absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.55); }
+    .hero-section h1 { font-size:3.5rem; font-weight:700; color:#fff; text-shadow:2px 2px 6px rgba(0,0,0,0.6);}
+    .hero-section p { font-size:1.25rem; margin-top:15px; color:#eee;}
+    .hero-section .btn { margin-top:20px; padding:12px 28px; border-radius:30px; font-weight:600; box-shadow:0 4px 12px rgba(0,0,0,0.3); }
+
+    /* About */
+    #about { padding:60px 0; }
+    #about img { border-radius:12px; transition: transform 0.3s; }
+    #about img:hover { transform: scale(1.05); }
+
+    /* Carousel */
+    .carousel-inner img { height: 500px; object-fit: cover; }
+    .carousel .carousel-control-prev-icon, .carousel .carousel-control-next-icon { background-color: rgba(0,0,0,0.6); border-radius: 50%; padding:15px; }
+
+    /* Menu */
+    #menu { padding:60px 0; }
+    #menu .card:hover { transform: translateY(-8px); box-shadow:0 8px 20px rgba(0,0,0,0.15); }
+    #menu .card-title { font-weight:600; }
+
+    /* Reservation */
+    #reservation { padding:60px 0; }
+    .card { border-radius:12px; }
+    #qrcode { display:inline-block; background:#fff; padding:8px; border-radius:6px; margin-top:10px; }
+    .table-btn { width:45px; height:45px; padding:0; margin:3px; }
+
+    /* Contact */
+    #contact { padding:60px 0; }
+    #contact h2 { margin-bottom:20px; }
+
+    /* Footer */
+    footer { background:#111; font-size:0.9em; color:#aaa; padding:20px 0; }
+
+    @media(max-width:768px){ .hero-section h1{font-size:2.3rem;} .hero-section p{font-size:1rem;} .carousel-inner img{height:300px;} }
+    @media(max-width:576px){ #about, #menu, #reservation, #contact{padding:40px 0;} }
+  </style>
 </head>
 <body>
 
@@ -17,17 +62,18 @@
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark-transparent">
   <div class="container">
     <a class="navbar-brand fw-bold" href="#">Fooddddie</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
-            aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="#reservation">Reservation</a></li>
+        <li class="nav-item"><a class="nav-link" href="#carouselSection">Gallery</a></li>
         <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
+        <li class="nav-item"><a class="nav-link" href="#reservation">Reservation</a></li>
+        <li class="nav-item"><a class="nav-link" href="#offers">Offers</a></li>
         <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        <li class="nav-item"><button id="themeToggle" class="btn btn-sm btn-outline-light ms-3">🌙</button></li>
       </ul>
     </div>
   </div>
@@ -44,44 +90,34 @@
 </header>
 
 <!-- About Section -->
-<section id="about" class="py-5">
+<section id="about">
   <div class="container">
     <div class="row align-items-center">
-      <div class="col-md-6">
-        <img src="img/about.jpg" alt="Restaurant" class="img-fluid rounded shadow">
-      </div>
+      <div class="col-md-6"><img src="img/about.jpg" alt="Restaurant" class="img-fluid rounded shadow"></div>
       <div class="col-md-6">
         <h2 class="fw-bold">Why Our Restaurant is the Best</h2>
-        <p class="mt-3">We serve authentic dishes made with love. Our cozy atmosphere and dedicated staff ensure every meal is a memorable experience.</p>
+        <p>We serve authentic dishes made with love. Our cozy atmosphere and dedicated staff ensure every meal is a memorable experience.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Image Carousel -->
-<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="img/carousel1.jpg" class="d-block w-100" alt="Food 1">
+<!-- Carousel Section -->
+<section id="carouselSection">
+  <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active"><img src="img/carousel1.jpg" class="d-block w-100" alt="Food 1"></div>
+      <div class="carousel-item"><img src="img/carousel2.jpg" class="d-block w-100" alt="Food 2"></div>
+      <div class="carousel-item"><img src="img/carousel3.jpg" class="d-block w-100" alt="Food 3"></div>
     </div>
-    <div class="carousel-item">
-      <img src="img/carousel2.jpg" class="d-block w-100" alt="Food 2">
-    </div>
-    <div class="carousel-item">
-      <img src="img/carousel3.jpg" class="d-block w-100" alt="Food 3">
-    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-    <span class="carousel-control-next-icon"></span>
-  </button>
-</div>
+</section>
 
 <!-- Menu Section -->
-<section id="menu" class="py-5 bg-light">
-  <div class="container text-center">
+<section id="menu" class="bg-light">
+  <div class="container text-center py-5">
     <h2 class="fw-bold mb-4">Our Menu</h2>
     <div class="row g-4">
       <div class="col-md-4">
@@ -119,45 +155,36 @@
 </section>
 
 <!-- Reservation Section -->
-<section id="reservation" class="py-5 bg-light">
-  <div class="container">
+<section id="reservation" class="bg-light">
+  <div class="container py-5">
     <div class="row g-4">
-      <!-- Booking Form -->
       <div class="col-lg-6">
         <div class="card shadow p-4">
           <h3 class="fw-bold mb-4">Book a Table</h3>
           <form id="bookingForm">
-            <div class="mb-3">
-              <input type="text" class="form-control" id="name" placeholder="Full Name" required>
-            </div>
-            <div class="mb-3">
-              <input type="tel" class="form-control" id="mobile" placeholder="Mobile Number" required>
-            </div>
-            <div class="mb-3">
-              <input type="number" class="form-control" id="members" placeholder="Number of Members" min="1" required>
-            </div>
-            <div class="mb-3">
-              <input type="date" class="form-control" id="date" required>
-            </div>
-            <div class="mb-3">
-              <input type="number" class="form-control" id="tableNo" placeholder="Table Number" min="1" required>
-            </div>
+            <div class="mb-3"><input type="text" class="form-control" id="name" placeholder="Full Name" required></div>
+            <div class="mb-3"><input type="tel" class="form-control" id="mobile" placeholder="Mobile Number" required></div>
+            <div class="mb-3"><input type="number" class="form-control" id="members" placeholder="Number of Members" min="1" required></div>
+            <div class="mb-3"><input type="date" class="form-control" id="date" required></div>
+            <div class="mb-3"><input type="number" class="form-control" id="tableNo" placeholder="Table Number" min="1" required></div>
             <button type="submit" class="btn btn-danger w-100">Generate QR</button>
           </form>
 
-          <!-- Success Message -->
           <div id="successMessage" class="alert alert-success mt-3" style="display:none;"></div>
 
-          <!-- QR Result -->
           <div class="text-center mt-4" id="qrResult" style="display:none;">
             <h5>Your Booking QR Code:</h5>
             <div id="qrcode" class="mb-3"></div>
             <button id="downloadQR" class="btn btn-success">Download QR</button>
           </div>
+
+          <div class="mt-5">
+            <h3 class="fw-bold mb-3">Available Tables</h3>
+            <div id="tables" class="d-flex flex-wrap gap-2"></div>
+          </div>
         </div>
       </div>
 
-      <!-- Opening Hours & Contact -->
       <div class="col-lg-6">
         <div class="bg-white p-4 shadow rounded">
           <h3>Opening Times</h3>
@@ -168,13 +195,25 @@
           <h3 id="contact">Contact</h3>
           <p><strong>Phone:</strong> 000 9283 8456</p>
           <p><strong>Address:</strong> 15 Florida Ave, Palo-Alto, 1111 CA</p>
+          <p><strong>Email:</strong> info@fooddddie.com</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
+<!-- Offers Section -->
+<section id="offers" class="py-5 bg-dark text-white text-center">
+  <div class="container">
+    <h2 class="fw-bold mb-4">Special Offers 🎉</h2>
+    <div class="row g-4">
+      <div class="col-md-4"><div class="p-4 bg-danger rounded shadow"><h4>Happy Hours</h4><p>50% Off on all drinks (5–7 PM)</p></div></div>
+      <div class="col-md-4"><div class="p-4 bg-warning rounded shadow"><h4>Weekend Buffet</h4><p>Unlimited meals @ 499Rs only!</p></div></div>
+      <div class="col-md-4"><div class="p-4 bg-success rounded shadow"><h4>Student Discount</h4><p>Show ID & get 20% Off</p></div></div>
+    </div>
+  </div>
+</section>
+
 <footer class="text-center text-white py-4 bg-dark">
   <p class="mb-0">&copy; 2025 Fooddddie. All rights reserved.</p>
 </footer>
@@ -182,13 +221,70 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- QR Code JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  // Dark Mode
+  const toggleBtn = document.getElementById("themeToggle");
+  toggleBtn.addEventListener("click",()=>{ document.body.classList.toggle("dark-mode"); toggleBtn.textContent = document.body.classList.contains("dark-mode")?"☀️":"🌙"; });
 
-<!-- Custom JS -->
+  // Table Availability
+  const totalTables = 10;
+  let bookedTables = [2,5,7];
+  const tablesDiv = document.getElementById("tables");
 
-<script src="script.js"></script>
+  function renderTables(){
+    tablesDiv.innerHTML = "";
+    for(let i=1;i<=totalTables;i++){
+      const btn=document.createElement("button");
+      btn.className="btn table-btn rounded-circle fw-bold";
+      btn.textContent=i;
+      if(bookedTables.includes(i)){ btn.classList.add("btn-secondary"); btn.disabled=true; }
+      else { 
+        btn.classList.add("btn-outline-success"); 
+        btn.addEventListener("click",()=>document.getElementById("tableNo").value=i); 
+      }
+      tablesDiv.appendChild(btn);
+    }
+  }
+  renderTables();
 
+  // Booking & QR
+  const form=document.getElementById("bookingForm");
+  const qrResult=document.getElementById("qrResult");
+  const qrcodeContainer=document.getElementById("qrcode");
+  const downloadBtn=document.getElementById("downloadQR");
+  const successMsg=document.getElementById("successMessage");
 
+  function clearQR(){ qrcodeContainer.innerHTML=''; }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    const name=document.getElementById("name").value.trim();
+    const mobile=document.getElementById("mobile").value.trim();
+    const members=document.getElementById("members").value.trim();
+    const date=document.getElementById("date").value.trim();
+    const tableNo=document.getElementById("tableNo").value.trim();
+    if(!name||!mobile||!members||!date||!tableNo){ alert("Please fill all fields."); return; }
+    const bookingInfo=`Booking Details:\nName: ${name}\nMobile: ${mobile}\nMembers: ${members}\nDate: ${date}\nTable No: ${tableNo}`;
+    clearQR();
+    new QRCode(qrcodeContainer,{text:bookingInfo,width:200,height:200});
+    qrResult.style.display="block";
+    successMsg.style.display="block";
+    successMsg.innerText=`✅ You successfully booked table no ${tableNo} on ${date}`;
+    bookedTables.push(parseInt(tableNo));
+    renderTables();
+  });
+
+  downloadBtn.addEventListener("click", function(){
+    const canvas=qrcodeContainer.querySelector("canvas");
+    if(!canvas) return alert("QR not generated yet.");
+    const link=document.createElement("a");
+    link.href=canvas.toDataURL("image/png");
+    link.download="booking-qr.png";
+    link.click();
+  });
+});
+</script>
 </body>
 </html>
+
